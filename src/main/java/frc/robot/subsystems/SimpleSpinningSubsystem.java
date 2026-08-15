@@ -61,7 +61,7 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
     private double current; // Motor current draw
     private double voltage; // Motor voltage applied
     private final Timer timeToTarget = new Timer();
-    private boolean reachedTarget;
+    private boolean reachedTarget = true;
 
     public SimpleSpinningSubsystem(boolean isRealRobot, int motorId, Current currentLimit, AngularVelocity maxVelocity,
             AngularAcceleration maxAcceleration, AngularVelocity velocityTolerance) {
