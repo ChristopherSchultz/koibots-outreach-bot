@@ -16,7 +16,7 @@ public class Spindexer extends SimpleSpinningSubsystem {
     public static final AngularVelocity TARGET_SPEED = Units.RPM.of(2000);
 
     public static final int MOTOR_ID = 0;
-    
+
     public Spindexer(boolean isRealRobot) {
         super(isRealRobot, MOTOR_ID, DEFAULT_CURRENT_LIMIT, NEO_MAX, DEFAULT_MAX_ACCELERATION);
     }
