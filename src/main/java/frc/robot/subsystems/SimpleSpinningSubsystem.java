@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.Second;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
@@ -35,6 +36,8 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
     public static final AngularVelocity NEO_MAX = RPM.of(5676);
     public static final AngularVelocity NEO_VORTEX_MAX = RPM.of(6784);
     public static final AngularVelocity NEO_550_MAX = RPM.of(11000);
+    public static final AngularAcceleration DEFAULT_MAX_ACCELERATION = RPM.per(Second).of(10);
+    public static final Current DEFAULT_CURRENT_LIMIT = Amps.of(20);
 
     private final boolean isRealRobot;
 
