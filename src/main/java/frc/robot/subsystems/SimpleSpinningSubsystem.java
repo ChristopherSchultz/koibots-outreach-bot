@@ -74,7 +74,8 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
             flywheelSim = new FlywheelSim(LinearSystemId.createFlywheelSystem(motorModel, 0.001, // moment of inertia,
                                                                                                  // kg·m²
                     1.0), // gearing
-                    motorModel, null);
+                    motorModel,
+                     0.0);
         }
         controller = motor.getClosedLoopController();
         config = new SparkMaxConfig();
