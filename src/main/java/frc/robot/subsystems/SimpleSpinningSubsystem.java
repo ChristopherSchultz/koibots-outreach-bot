@@ -117,7 +117,7 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
      * Implements a passive stop. No power will be applied in order to actively stop the mechanism.
      */
     protected void stop() {
-        controller.setSetpoint(0, ControlType.kDutyCycle);
+        motor.stopMotor();
         targetVelocity = ZERO_VELOCITY;
         targetRPM = 0;
         reachedTarget = true; // Not strictly true, but we also don't care.
