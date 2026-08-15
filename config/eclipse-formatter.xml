@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profiles version="21">
+    <profile kind="CodeFormatterProfile" name="OpenJDK-ish" version="21">
+
+        <!-- Use spaces instead of tabs -->
+        <setting
+            id="org.eclipse.jdt.core.formatter.tabulation.char"
+            value="space"/>
+
+        <setting
+            id="org.eclipse.jdt.core.formatter.tabulation.size"
+            value="4"/>
+
+        <!-- Reflow comments at 100 columns -->
+        <setting
+            id="org.eclipse.jdt.core.formatter.comment.line_length"
+            value="100"/>
+
+        <!-- Reflow existing comment lines instead of preserving them -->
+        <setting
+            id="org.eclipse.jdt.core.formatter.join_lines_in_comments"
+            value="true"/>
+
+    </profile>
+</profiles>

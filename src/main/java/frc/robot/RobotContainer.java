@@ -23,55 +23,53 @@ import frc.robot.subsystems.Shooter;
  */
 @Logged
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final Intake intake;
-  private final IntakeExtension intakeExtension;
-  private final Shooter shooter;
+    // The robot's subsystems and commands are defined here...
+    private final Intake intake;
+    private final IntakeExtension intakeExtension;
+    private final Shooter shooter;
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController controller =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+    // Replace with CommandPS4Controller or CommandJoystick if needed
+    private final CommandXboxController controller = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. 
-   * @param b */
-  public RobotContainer(boolean isRealRobot) {
-    // Configure the trigger bindings
-    intake = new Intake(isRealRobot);
-    intakeExtension = new IntakeExtension(isRealRobot);
-    shooter = new Shooter(isRealRobot);
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     *
+     * @param b
+     */
+    public RobotContainer(boolean isRealRobot) {
+        // Configure the trigger bindings
+        intake = new Intake(isRealRobot);
+        intakeExtension = new IntakeExtension(isRealRobot);
+        shooter = new Shooter(isRealRobot);
 
-    configureBindings();
-  }
+        configureBindings();
+    }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    controller.leftBumper()
-      .onTrue(IntakeCommands.getRunIntakeCommand(intakeExtension, intake))
-      .onFalse(IntakeCommands.getStopIntakeCommand(intakeExtension, intake))
-    ;
+    /**
+     * Use this method to define your trigger->command mappings. Triggers can be created via the
+     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+     * predicate, or via the named factories in
+     * {@link edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+     * {@link CommandXboxController
+     * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller PS4} controllers or
+     * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight joysticks}.
+     */
+    private void configureBindings() {
+        controller.leftBumper().onTrue(IntakeCommands.getRunIntakeCommand(intakeExtension, intake))
+                .onFalse(IntakeCommands.getStopIntakeCommand(intakeExtension, intake));
 
-    controller.rightBumper()
-      .onTrue(ShooterCommands.getStartShootingCommand(shooter))
-      .onFalse(ShooterCommands.getStopShootingCommand(shooter))
-    ;
-    // Do nothing quite yet
-  }
+        controller.rightBumper().onTrue(ShooterCommands.getStartShootingCommand(shooter))
+                .onFalse(ShooterCommands.getStopShootingCommand(shooter));
+        // Do nothing quite yet
+    }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
-  }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // An example command will be run in autonomous
+        return null;
+    }
 }

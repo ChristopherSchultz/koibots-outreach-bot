@@ -118,11 +118,12 @@ spotless {
             exclude '**/build/**', '**/build-*/**'
         }
         toggleOffOn()
-        eclipse()
+        eclipse().configFile("config/eclipse-formatter.xml")
         removeUnusedImports()
         trimTrailingWhitespace()
         endWithNewline()
     }
+
     groovyGradle {
         target fileTree('.') {
             include '**/*.gradle'
