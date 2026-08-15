@@ -36,7 +36,7 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
     public static final AngularVelocity NEO_MAX = RPM.of(5676);
     public static final AngularVelocity NEO_VORTEX_MAX = RPM.of(6784);
     public static final AngularVelocity NEO_550_MAX = RPM.of(11000);
-    public static final AngularAcceleration DEFAULT_MAX_ACCELERATION = RPM.per(Second).of(10);
+    public static final AngularAcceleration DEFAULT_MAX_ACCELERATION = RPM.per(Second).of(500);
     public static final Current DEFAULT_CURRENT_LIMIT = Amps.of(20);
 
     private final boolean isRealRobot;
@@ -74,8 +74,7 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
             flywheelSim = new FlywheelSim(LinearSystemId.createFlywheelSystem(motorModel, 0.001, // moment of inertia,
                                                                                                  // kg·m²
                     1.0), // gearing
-                    motorModel,
-                     0.0);
+                    motorModel, 0.0);
         }
         controller = motor.getClosedLoopController();
         config = new SparkMaxConfig();
