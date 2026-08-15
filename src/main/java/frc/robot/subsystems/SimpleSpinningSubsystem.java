@@ -137,7 +137,7 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
     }
 
     protected Command stopCommand() {
-        return Commands.runOnce(() -> stop());
+        return Commands.runOnce(this::stop, this);
     }
 
     protected Command setTargetVelocityCommand(final AngularVelocity velocity) {
