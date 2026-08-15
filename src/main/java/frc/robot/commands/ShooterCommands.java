@@ -8,8 +8,7 @@ import frc.robot.subsystems.Spindexer;
 public class ShooterCommands {
     public static Command getStartShootingCommand(Spindexer spindexer, Shooter shooter) {
         return shooter.startShooting()
-                      .andThen(Commands.waitUntil(shooter::isAtTargetSpeed)
-                                       .andThen(spindexer.startSpinning()));
+                .andThen(Commands.waitUntil(shooter::isAtTargetSpeed).andThen(spindexer.startSpinning()));
     }
 
     public static Command getStopShootingCommand(Spindexer spindexer, Shooter shooter) {
