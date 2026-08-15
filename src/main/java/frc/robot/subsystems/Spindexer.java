@@ -32,6 +32,6 @@ public class Spindexer extends SimpleSpinningSubsystem {
     }
 
     public Command stopSpinning() {
-        return setTargetVelocityCommand(ZERO_VELOCITY);
+        return stopCommand();
     }
 }

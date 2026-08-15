@@ -113,6 +113,17 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
         controller.setSetpoint(targetRPM, ControlType.kMAXMotionVelocityControl);
     }
 
+    /**
+     * Implements a passive stop. No power will be applied in order to actively stop the mechanism.
+     */
+    protected void stop() {
+        controller.setSetpoint(0, ControlType.kDutyCycle);
+        targetVelocity = ZERO_VELOCITY;
+        targetRPM = 0;
+        reachedTarget = true; // Not strictly true, but we also don't care.
+        timeToTarget.stop();
+    }
+
     protected AngularVelocity getTargetVelocity() {
         return targetVelocity;
     }
@@ -123,6 +134,10 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
 
     protected boolean isRealRobot() {
         return isRealRobot;
+    }
+
+    protected Command stopCommand() {
+        return Commands.runOnce(() -> stop());
     }
 
     protected Command setTargetVelocityCommand(final AngularVelocity velocity) {

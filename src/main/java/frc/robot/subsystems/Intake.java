@@ -32,6 +32,6 @@ public class Intake extends SimpleSpinningSubsystem {
     }
 
     public Command idleIntake() {
-        return setTargetVelocityCommand(ZERO_VELOCITY);
+        return stopCommand();
     }
 }
