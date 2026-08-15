@@ -14,6 +14,7 @@ import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeExtension;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Spindexer;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,6 +27,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final Intake intake;
     private final IntakeExtension intakeExtension;
+    private final Spindexer spindexer;
     private final Shooter shooter;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -40,6 +42,7 @@ public class RobotContainer {
         // Configure the trigger bindings
         intake = new Intake(isRealRobot);
         intakeExtension = new IntakeExtension(isRealRobot);
+        spindexer = new Spindexer(isRealRobot);
         shooter = new Shooter(isRealRobot);
 
         configureBindings();
@@ -58,8 +61,8 @@ public class RobotContainer {
         controller.leftBumper().onTrue(IntakeCommands.getRunIntakeCommand(intakeExtension, intake))
                 .onFalse(IntakeCommands.getStopIntakeCommand(intakeExtension, intake));
 
-        controller.rightBumper().onTrue(ShooterCommands.getStartShootingCommand(shooter))
-                .onFalse(ShooterCommands.getStopShootingCommand(shooter));
+        controller.rightBumper().onTrue(ShooterCommands.getStartShootingCommand(spindexer, shooter))
+                .onFalse(ShooterCommands.getStopShootingCommand(spindexer, shooter));
         // Do nothing quite yet
     }
 
