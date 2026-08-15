@@ -63,7 +63,8 @@ public class RobotContainer {
 
         controller.rightBumper().onTrue(ShooterCommands.getStartShootingCommand(spindexer, shooter))
                 .onFalse(ShooterCommands.getStopShootingCommand(spindexer, shooter));
-        // Do nothing quite yet
+
+        System.out.println("Bindings configured");
     }
 
     /**
