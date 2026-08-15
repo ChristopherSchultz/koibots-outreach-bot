@@ -32,8 +32,8 @@ public class Shooter extends SubsystemBase {
     private final SparkMaxConfig config;
 
     // Stuff for logging
-    double setpoint; // Requested velocity target
-    double current; // Motor current draw
+    double targetRPM; // Requested velocity target
+    double measuredRPM; // Motor current draw
     double voltage; // Motor voltage applied
     double velocity; // Motor actual velocity
 
@@ -46,7 +46,7 @@ public class Shooter extends SubsystemBase {
     }
 
     private void setSpeed(AngularVelocity speed) {
-        motor.set(setpoint = speed.in(RPM));
+        motor.set(targetRPM = speed.in(RPM));
     }
 
     public Command setSpeedCommand(AngularVelocity speed) {
@@ -63,7 +63,7 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        current = motor.getOutputCurrent();
+        measuredRPM = motor.getOutputCurrent();
         voltage = motor.getAppliedOutput() * motor.getBusVoltage();
         velocity = motor.getEncoder().getVelocity();
     }
@@ -71,6 +71,6 @@ public class Shooter extends SubsystemBase {
     @Override
     public void simulationPeriodic() {
         // Pretend that everything happens instantaneously
-        velocity = setpoint;
+        velocity = targetRPM;
     }
 }
