@@ -27,7 +27,7 @@ public class Shooter extends SimpleSpinningSubsystem {
     public static final int MOTOR_ID = 50;
 
     public Shooter(boolean isRealRobot) {
-        super(isRealRobot, MOTOR_ID, DEFAULT_CURRENT_LIMIT, NEO_MAX, DEFAULT_MAX_ACCELERATION);
+        super(isRealRobot, MOTOR_ID, DEFAULT_CURRENT_LIMIT, NEO_MAX, DEFAULT_MAX_ACCELERATION, VELOCITY_EPSILON);
     }
 
     public Command startShooting() {

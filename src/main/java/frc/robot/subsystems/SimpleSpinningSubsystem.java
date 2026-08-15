@@ -21,6 +21,7 @@ import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -50,6 +51,7 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
     private final FlywheelSim flywheelSim;
 
     private final AngularVelocity maxVelocity;
+    private final AngularVelocity velocityTolerance;
 
     private AngularVelocity targetVelocity = ZERO_VELOCITY;
 
@@ -58,11 +60,14 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
     private double measuredRPM; // Motor actual velocity
     private double current; // Motor current draw
     private double voltage; // Motor voltage applied
+    private final Timer timeToTarget = new Timer();
+    private boolean reachedTarget;
 
     public SimpleSpinningSubsystem(boolean isRealRobot, int motorId, Current currentLimit, AngularVelocity maxVelocity,
-            AngularAcceleration maxAcceleration) {
+            AngularAcceleration maxAcceleration, AngularVelocity velocityTolerance) {
         this.isRealRobot = isRealRobot;
         this.maxVelocity = maxVelocity;
+        this.velocityTolerance = velocityTolerance;
 
         motor = new SparkMax(motorId, MotorType.kBrushless);
         if (isRealRobot) {
@@ -76,6 +81,7 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
                     1.0), // gearing
                     motorModel, 0.0);
         }
+
         controller = motor.getClosedLoopController();
         config = new SparkMaxConfig();
         config.inverted(false);
@@ -84,7 +90,10 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
         config.closedLoop.p(0.0001) // TODO: Very conservative starting value
                 .i(0).d(0);
 
-        // maxAcceleration() wants RPM/s not RPS/S
+        // TODO: Allow subclass to specify feedforward values
+        config.closedLoop.feedForward.kV(0.0021); // TODO: Very conservative starting value
+
+        // NOTE: maxAcceleration() wants RPM/s not RPS/S
         config.closedLoop.maxMotion.maxAcceleration(60 * maxAcceleration.in(Units.RotationsPerSecondPerSecond));
 
         motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -99,6 +108,8 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
 
         targetVelocity = velocity;
         this.targetRPM = targetRPM;
+        reachedTarget = false;
+        timeToTarget.restart();
         controller.setSetpoint(targetRPM, ControlType.kMAXMotionVelocityControl);
     }
 
@@ -118,11 +129,12 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
         return Commands.runOnce(() -> setTargetVelocity(velocity), this);
     }
 
-    public boolean isAtTargetVelocity(AngularVelocity tolerance) {
-        // return getVelocity().isNear(getTargetVelocity(), tolerance);
+    public boolean isAtTargetVelocity() {
+        return reachedTarget;
+    }
 
-        // Don't generate quite so much garbage as the above ^^^ would
-        return Math.abs(measuredRPM - targetRPM) <= tolerance.in(RPM);
+    public static boolean isWithinTolerances(double a, double b, double tolerance) {
+        return Math.abs(a - b) <= tolerance;
     }
 
     @Override
@@ -130,6 +142,11 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
         current = motor.getOutputCurrent();
         voltage = motor.getAppliedOutput() * motor.getBusVoltage();
         measuredRPM = motor.getEncoder().getVelocity();
+
+        if (!reachedTarget && isWithinTolerances(measuredRPM, targetRPM, velocityTolerance.in(RPM))) {
+            timeToTarget.stop();
+            reachedTarget = true;
+        }
     }
 
     @Override
@@ -157,5 +174,9 @@ public class SimpleSpinningSubsystem extends SubsystemBase {
 
     public double getMeasuredRPM() {
         return measuredRPM;
+    }
+
+    public double getTimeToTarget() {
+        return timeToTarget.get();
     }
 }
