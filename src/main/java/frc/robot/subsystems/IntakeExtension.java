@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /** Represents the intake extension of Fishsticks. */
 @Logged
 public class IntakeExtension extends SubsystemBase {
-    public static final int MOTOR_ID = 0;
+    public static final int MOTOR_ID = 20;
     public static final int CURRENT_LIMIT = (int) Units.Amps.of(20).in(Amps);
 
     public static final AngularVelocity FORWARD_SPEED = Units.RPM.of(250);
