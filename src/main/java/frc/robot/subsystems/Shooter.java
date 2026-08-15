@@ -61,6 +61,14 @@ public class Shooter extends SubsystemBase {
         return setSpeedCommand(IDLE_SPEED);
     }
 
+    private boolean equals(double a, double b, double epsilon) {
+        return a == b || Math.abs(a - b) < epsilon;
+    }
+
+    public boolean isAtTargetSpeed() {
+        return equals(measuredRPM, targetRPM, 10);
+    }
+
     @Override
     public void periodic() {
         measuredRPM = motor.getOutputCurrent();
