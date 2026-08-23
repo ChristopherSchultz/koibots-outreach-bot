@@ -20,6 +20,6 @@ public class IntakeCommands {
     };
 
     public static Command getReverseIntakeCommand(Intake intake) {
-        return intake.reverse();
+        return intake.reverseIntake();
     }
 }

@@ -13,6 +13,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.RobotCommands;
 import frc.robot.commands.ShooterCommands;
+import frc.robot.subsystems.Eyes;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeExtension;
@@ -35,7 +36,7 @@ public class RobotContainer {
     private final Feeder feeder;
     private final Subsystem turret;
     private final Shooter shooter;
-    private final Subsystem eyes;
+    private final Eyes eyes;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController controller = new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -54,7 +55,7 @@ public class RobotContainer {
         feeder = new Feeder(isRealRobot);
         turret = null;
         shooter = new Shooter(isRealRobot);
-        eyes = null;
+        eyes = new Eyes(isRealRobot);
 
         configureBindings();
     }
