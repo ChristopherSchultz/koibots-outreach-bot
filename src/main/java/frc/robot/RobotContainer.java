@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ShooterCommands;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeExtension;
 import frc.robot.subsystems.Shooter;
@@ -28,6 +29,7 @@ public class RobotContainer {
     private final Intake intake;
     private final IntakeExtension intakeExtension;
     private final Spindexer spindexer;
+    private final Feeder feeder;
     private final Shooter shooter;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -43,6 +45,7 @@ public class RobotContainer {
         intake = new Intake(isRealRobot);
         intakeExtension = new IntakeExtension(isRealRobot);
         spindexer = new Spindexer(isRealRobot);
+        feeder = new Feeder(isRealRobot);
         shooter = new Shooter(isRealRobot);
 
         configureBindings();
@@ -61,8 +64,8 @@ public class RobotContainer {
         controller.leftBumper().onTrue(IntakeCommands.getRunIntakeCommand(intakeExtension, intake))
                 .onFalse(IntakeCommands.getStopIntakeCommand(intakeExtension, intake));
 
-        controller.rightBumper().onTrue(ShooterCommands.getStartShootingCommand(spindexer, shooter))
-                .onFalse(ShooterCommands.getStopShootingCommand(spindexer, shooter));
+        controller.rightBumper().onTrue(ShooterCommands.getStartShootingCommand(spindexer, feeder, shooter))
+                .onFalse(ShooterCommands.getStopShootingCommand(spindexer, feeder, shooter));
 
         System.out.println("Bindings configured");
     }
