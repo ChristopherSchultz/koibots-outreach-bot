@@ -6,10 +6,12 @@ package frc.robot;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.IntakeCommands;
+import frc.robot.commands.RobotCommands;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
@@ -26,11 +28,14 @@ import frc.robot.subsystems.Spindexer;
 @Logged
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
+    private final Subsystem drivetrain;
     private final Intake intake;
     private final IntakeExtension intakeExtension;
     private final Spindexer spindexer;
     private final Feeder feeder;
+    private final Subsystem turret;
     private final Shooter shooter;
+    private final Subsystem eyes;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController controller = new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -42,11 +47,14 @@ public class RobotContainer {
      */
     public RobotContainer(boolean isRealRobot) {
         // Configure the trigger bindings
+        drivetrain = null;
         intake = new Intake(isRealRobot);
         intakeExtension = new IntakeExtension(isRealRobot);
         spindexer = new Spindexer(isRealRobot);
         feeder = new Feeder(isRealRobot);
+        turret = null;
         shooter = new Shooter(isRealRobot);
+        eyes = null;
 
         configureBindings();
     }
@@ -64,8 +72,14 @@ public class RobotContainer {
         controller.leftTrigger().onTrue(IntakeCommands.getRunIntakeCommand(intakeExtension, intake))
                 .onFalse(IntakeCommands.getStopIntakeCommand(intakeExtension, intake));
 
-        controller.leftBumper().onTrue(IntakeCommands.getReverseIntakeCommand(intake))
+        controller.leftBumper().and(controller.rightBumper().negate())
+                .onTrue(IntakeCommands.getReverseIntakeCommand(intake))
                 .onFalse(IntakeCommands.getStopIntakeCommand(intakeExtension, intake));
+
+        controller.leftBumper().and(controller.rightBumper())
+            .onTrue(RobotCommands.getKillAllHumansCommand(drivetrain, spindexer, feeder, turret, shooter, eyes))
+            .onFalse(RobotCommands.getStealthModeCommand(drivetrain, spindexer, feeder, turret, shooter, eyes))
+            ;
 
         // TODO: Be sensitive to the trigger axis value e.g. for variable speed
         controller.rightTrigger().onTrue(ShooterCommands.getStartShootingCommand(spindexer, feeder, shooter))
