@@ -31,7 +31,7 @@ public class Eye extends SubsystemBase {
 
     /**
      * Sets the target angle for the motor.
-     * 
+     *
      * @param angle
      */
     protected void setTargetAngle(double targetAngle) {
@@ -50,7 +50,7 @@ public class Eye extends SubsystemBase {
     @Override
     public void periodic() {
         // We are either set to a steady speed or heading toward a target.
-        if(null != speed) {
+        if (null != speed) {
             // motor.setSpeed(speed)
         } else {
             // motor.setTargetAngle(targetAngle)
@@ -90,11 +90,8 @@ public class Eye extends SubsystemBase {
     }
 
     public Command getOscillateBetweenCommand(double angleA, double angleB) {
-        return Commands.repeatingSequence(
-            Commands.runOnce(() -> setTargetAngle(angleA)),
-            Commands.waitUntil(this::isAtTargetAngle),
-            Commands.runOnce(() -> setTargetAngle(angleB)),
-            Commands.waitUntil(this::isAtTargetAngle)
-        );
+        return Commands.repeatingSequence(Commands.runOnce(() -> setTargetAngle(angleA)),
+                Commands.waitUntil(this::isAtTargetAngle), Commands.runOnce(() -> setTargetAngle(angleB)),
+                Commands.waitUntil(this::isAtTargetAngle));
     }
 }

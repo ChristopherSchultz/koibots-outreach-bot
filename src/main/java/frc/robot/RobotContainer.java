@@ -78,9 +78,8 @@ public class RobotContainer {
                 .onFalse(IntakeCommands.getStopIntakeCommand(intakeExtension, intake));
 
         controller.leftBumper().and(controller.rightBumper())
-            .onTrue(RobotCommands.getKillAllHumansCommand(drivetrain, spindexer, feeder, turret, shooter, eyes))
-            .onFalse(RobotCommands.getStealthModeCommand(drivetrain, spindexer, feeder, turret, shooter, eyes))
-            ;
+                .onTrue(RobotCommands.getKillAllHumansCommand(drivetrain, spindexer, feeder, turret, shooter, eyes))
+                .onFalse(RobotCommands.getStealthModeCommand(drivetrain, spindexer, feeder, turret, shooter, eyes));
 
         // TODO: Be sensitive to the trigger axis value e.g. for variable speed
         controller.rightTrigger().onTrue(ShooterCommands.getStartShootingCommand(spindexer, feeder, shooter))

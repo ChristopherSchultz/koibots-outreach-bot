@@ -13,34 +13,24 @@ public class Eyes extends SubsystemBase {
     }
 
     public Command getNeutralCommand() {
-        return Commands.parallel(leftEye.getLookStraightCommand(),
-                                 rightEye.getLookStraightCommand()
-        );
+        return Commands.parallel(leftEye.getLookStraightCommand(), rightEye.getLookStraightCommand());
     }
 
     public Command getAngryCommand() {
-        return Commands.parallel(leftEye.getLookDownRightCommand(),
-                                 rightEye.getLookDownLeftCommand())
-        ;
+        return Commands.parallel(leftEye.getLookDownRightCommand(), rightEye.getLookDownLeftCommand());
     }
 
     public Command getSadCommand() {
-        return Commands.parallel(leftEye.getLookDownCommand(),
-                                 rightEye.getLookDownCommand())
-        ;
+        return Commands.parallel(leftEye.getLookDownCommand(), rightEye.getLookDownCommand());
     }
 
     public Command getCrossEyedCommand() {
-        return Commands.parallel(leftEye.getLookRightCommand(),
-                                 rightEye.getLookLeftCommand())
-        ;
+        return Commands.parallel(leftEye.getLookRightCommand(), rightEye.getLookLeftCommand());
     }
 
     public Command getActCasualCommand() {
-        return getNeutralCommand()
-        .andThen(Commands.waitUntil(leftEye::isAtTargetAngle))
-        .andThen(Commands.waitUntil(rightEye::isAtTargetAngle))
-        .andThen(Commands.parallel(leftEye.getOscillateBetweenCommand(Eye.ANGLE_NORTHWEST, Eye.ANGLE_NORTHEAST)))
-        ;
+        return getNeutralCommand().andThen(Commands.waitUntil(leftEye::isAtTargetAngle))
+                .andThen(Commands.waitUntil(rightEye::isAtTargetAngle)).andThen(Commands
+                        .parallel(leftEye.getOscillateBetweenCommand(Eye.ANGLE_NORTHWEST, Eye.ANGLE_NORTHEAST)));
     }
 }
