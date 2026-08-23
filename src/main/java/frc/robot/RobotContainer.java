@@ -61,7 +61,10 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight joysticks}.
      */
     private void configureBindings() {
-        controller.leftBumper().onTrue(IntakeCommands.getRunIntakeCommand(intakeExtension, intake))
+        controller.leftTrigger().onTrue(IntakeCommands.getRunIntakeCommand(intakeExtension, intake))
+                .onFalse(IntakeCommands.getStopIntakeCommand(intakeExtension, intake));
+
+        controller.leftBumper().onTrue(IntakeCommands.getReverseIntakeCommand(intake))
                 .onFalse(IntakeCommands.getStopIntakeCommand(intakeExtension, intake));
 
         controller.rightBumper().onTrue(ShooterCommands.getStartShootingCommand(spindexer, feeder, shooter))

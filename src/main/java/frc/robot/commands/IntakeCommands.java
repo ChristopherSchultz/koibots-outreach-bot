@@ -18,4 +18,8 @@ public class IntakeCommands {
         // into this command.
         return intakeExtension.retractExtension().until(intakeExtension::getReverseLimit).andThen(intake.idleIntake());
     };
+
+    public static Command getReverseIntakeCommand(Intake intake) {
+        return intake.reverse();
+    }
 }

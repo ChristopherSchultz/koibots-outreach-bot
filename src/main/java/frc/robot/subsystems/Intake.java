@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class Intake extends SimpleSpinningSubsystem {
     public static final AngularVelocity TARGET_SPEED = RPM.of(2000);
 
+    public static final AngularVelocity REVERSE_SPEED = RPM.of(-50);
+
     /**
      * The difference between the target velocity and the actual velocity we will tolerate.
      */
@@ -33,5 +35,9 @@ public class Intake extends SimpleSpinningSubsystem {
 
     public Command idleIntake() {
         return stopCommand();
+    }
+
+    public Command reverseIntake() {
+        return setTargetVelocityCommand(REVERSE_SPEED);
     }
 }
