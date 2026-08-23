@@ -67,7 +67,8 @@ public class RobotContainer {
         controller.leftBumper().onTrue(IntakeCommands.getReverseIntakeCommand(intake))
                 .onFalse(IntakeCommands.getStopIntakeCommand(intakeExtension, intake));
 
-        controller.rightBumper().onTrue(ShooterCommands.getStartShootingCommand(spindexer, feeder, shooter))
+        // TODO: Be sensitive to the trigger axis value e.g. for variable speed
+        controller.rightTrigger().onTrue(ShooterCommands.getStartShootingCommand(spindexer, feeder, shooter))
                 .onFalse(ShooterCommands.getStopShootingCommand(spindexer, feeder, shooter));
 
         System.out.println("Bindings configured");
