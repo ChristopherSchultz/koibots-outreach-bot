@@ -40,7 +40,8 @@ public class Eye extends SubsystemBase {
     /**
      * Sets the target angle for the motor.
      *
-     * @param angle The desired angle for the servo.
+     * @param angle
+     *            The desired angle for the servo.
      */
     protected void setTargetAngle(double targetAngle) {
         this.targetAngle = targetAngle;
@@ -50,13 +51,11 @@ public class Eye extends SubsystemBase {
     /**
      * Checks to see if the Eye is at the target angle.
      *
-     * Important caveat: this is not possible using REV Servos, so ...
-     * this method always returns <code>true</code> which makes it...
-     * slightly useless.
+     * Important caveat: this is not possible using REV Servos, so ... this method always returns
+     * <code>true</code> which makes it... slightly useless.
      *
-     * TODO: Maybe just delete this method entirely since it's useless?
-     * TODO: ... or have it throw an exception to indicate that it can't
-     * TODO: work.
+     * TODO: Maybe just delete this method entirely since it's useless? TODO: ... or have it throw an
+     * exception to indicate that it can't TODO: work.
      *
      * @return <code>true</code> :(
      */
@@ -71,22 +70,17 @@ public class Eye extends SubsystemBase {
     private double estimateTravelTime(double currentAngle, double targetAngle) {
         double distance = Math.abs(currentAngle - targetAngle);
 
-        return distance / SERVO_SPEED_DEG_PER_SEC
-            + COOL_DOWN_TIME_SEC
-        ;
+        return distance / SERVO_SPEED_DEG_PER_SEC + COOL_DOWN_TIME_SEC;
     }
 
     protected Command lookAtAndWaitCommand(double targetAngle) {
         return Commands.defer(() -> {
             // NOTE: This is a big assumption that we are actually at the
-            //       targetAngle when we run this command.
+            // targetAngle when we run this command.
             double travelTime = estimateTravelTime(this.targetAngle, targetAngle);
 
-            return lookAtCommand(targetAngle)
-                .andThen(Commands.waitSeconds(travelTime))
-                ;
-        },
-        Set.of(this));
+            return lookAtCommand(targetAngle).andThen(Commands.waitSeconds(travelTime));
+        }, Set.of(this));
     }
 
     public Command getLookStraightCommand() {
@@ -114,9 +108,6 @@ public class Eye extends SubsystemBase {
     }
 
     public Command getOscillateBetweenCommand(double angleA, double angleB) {
-        return Commands.repeatingSequence(
-                lookAtAndWaitCommand(angleA),
-                lookAtAndWaitCommand(angleB))
-                ;
+        return Commands.repeatingSequence(lookAtAndWaitCommand(angleA), lookAtAndWaitCommand(angleB));
     }
 }

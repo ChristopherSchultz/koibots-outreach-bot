@@ -13,20 +13,16 @@ public class RobotCommands {
     public static Command getKillAllHumansCommand(Subsystem drivetrain, Spindexer spindexer, Feeder feeder,
             Turret turret, Shooter shooter, Eyes eyes) {
         return // drivetrain.stalk()
-            // .andThen
-            Commands.none() // Just until we have a drivetrain
-            .andThen(eyes.getAngryCommand())
-            .andThen(ShooterCommands.getStartShootingCommand(spindexer, feeder, shooter))
-            .andThen(turret.getOscillateCommand())
-        ;
+        Commands.none() // Just until we have a drivetrain
+                .andThen(eyes.getAngryCommand())
+                .andThen(ShooterCommands.getStartShootingCommand(spindexer, feeder, shooter))
+                .andThen(turret.getOscillateCommand());
     }
 
-    public static Command getStealthModeCommand(Subsystem drivetrain, Spindexer spindexer, Feeder feeder,
-            Turret turret, Shooter shooter, Eyes eyes) {
+    public static Command getStealthModeCommand(Subsystem drivetrain, Spindexer spindexer, Feeder feeder, Turret turret,
+            Shooter shooter, Eyes eyes) {
         return Commands.parallel(// drivetrain.stop(),
                 turret.getStopCommand(), // active stop?
-                ShooterCommands.getStopShootingCommand(spindexer, feeder, shooter),
-                eyes.getActCasualCommand())
-            ;
+                ShooterCommands.getStopShootingCommand(spindexer, feeder, shooter), eyes.getActCasualCommand());
     }
 }

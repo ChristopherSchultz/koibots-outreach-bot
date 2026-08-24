@@ -7,8 +7,8 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
- * Represents the Fishsticks feeder. This is only the feeder part of the robot, which
- * sits between the spindexer and the shooter.
+ * Represents the Fishsticks feeder. This is only the feeder part of the robot, which sits between
+ * the spindexer and the shooter.
  *
  * @see Spindexer
  * @see Shooter

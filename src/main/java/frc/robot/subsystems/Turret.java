@@ -45,9 +45,7 @@ public class Turret extends SubsystemBase {
     }
 
     public Command getOscillateCommand() {
-        return Commands.repeatingSequence(
-            getSweepToAngleCommand(MAX_PORT_ANGLE),
-            getSweepToAngleCommand(MAX_STARBOARD_ANGLE)
-        );
+        return Commands.repeatingSequence(getSweepToAngleCommand(MAX_PORT_ANGLE),
+                getSweepToAngleCommand(MAX_STARBOARD_ANGLE));
     }
 }

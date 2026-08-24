@@ -9,8 +9,8 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
- * Represents the Fishsticks shooter. This is only the actual shooter part of the robot, and not
- * the turret, which can be found elsewhere.
+ * Represents the Fishsticks shooter. This is only the actual shooter part of the robot, and not the
+ * turret, which can be found elsewhere.
  *
  * @see Turret
  */
