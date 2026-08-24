@@ -19,6 +19,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeExtension;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Spindexer;
+import frc.robot.subsystems.Turret;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,7 +35,7 @@ public class RobotContainer {
     private final IntakeExtension intakeExtension;
     private final Spindexer spindexer;
     private final Feeder feeder;
-    private final Subsystem turret;
+    private final Turret turret;
     private final Shooter shooter;
     private final Eyes eyes;
 
@@ -53,7 +54,7 @@ public class RobotContainer {
         intakeExtension = new IntakeExtension(isRealRobot);
         spindexer = new Spindexer(isRealRobot);
         feeder = new Feeder(isRealRobot);
-        turret = null;
+        turret = new Turret(isRealRobot);
         shooter = new Shooter(isRealRobot);
         eyes = new Eyes(isRealRobot);
 
