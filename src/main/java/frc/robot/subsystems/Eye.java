@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.RPM;
 
+import java.util.Set;
+
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +22,10 @@ public class Eye extends SubsystemBase {
 
     public static final double ANGLE_TOLERANCE = 2.0;
 
+    // NOTE: Wild guesses as to how fast things move
+    private static final double SERVO_SPEED_DEG_PER_SEC = 60.0 / 0.14;
+    private static final double COOL_DOWN_TIME_SEC = 0.05;
+
     private boolean isRealRobot;
     private double targetAngle = ANGLE_NORTH;
 
@@ -35,7 +41,7 @@ public class Eye extends SubsystemBase {
     /**
      * Sets the target angle for the motor.
      *
-     * @param angle
+     * @param angle The desired angle for the servo.
      */
     protected void setTargetAngle(double targetAngle) {
         this.targetAngle = targetAngle;
@@ -44,6 +50,16 @@ public class Eye extends SubsystemBase {
 
     /**
      * Checks to see if the Eye is at the target angle.
+     *
+     * Important caveat: this is not possible using REV Servos, so ...
+     * this method always returns <code>true</code> which makes it...
+     * slightly useless.
+     *
+     * TODO: Maybe just delete this method entirely since it's useless?
+     * TODO: ... or have it throw an exception to indicate that it can't
+     * TODO: work.
+     *
+     * @return <code>true</code> :(
      */
     public boolean isAtTargetAngle() {
         return Math.abs(servo.getPosition() - targetAngle) <= ANGLE_TOLERANCE;
@@ -53,10 +69,25 @@ public class Eye extends SubsystemBase {
         return Commands.runOnce(() -> setTargetAngle(angle), this);
     }
 
-    protected Command lookAtAndWaitCommand(double angle) {
-        return lookAtCommand(angle)
-            .andThen(Commands.waitUntil(this::isAtTargetAngle))
-            ;
+    private double estimateTravelTime(double currentAngle, double targetAngle) {
+        double distance = Math.abs(currentAngle - targetAngle);
+
+        return distance / SERVO_SPEED_DEG_PER_SEC
+            + COOL_DOWN_TIME_SEC
+        ;
+    }
+
+    protected Command lookAtAndWaitCommand(double targetAngle) {
+        return Commands.defer(() -> {
+            // NOTE: This is a big assumption that we are actually at the
+            //       targetAngle when we run this command.
+            double travelTime = estimateTravelTime(this.targetAngle, targetAngle);
+
+            return lookAtCommand(targetAngle)
+                .andThen(Commands.waitSeconds(travelTime))
+                ;
+        },
+        Set.of(this));
     }
 
     public Command getLookStraightCommand() {
