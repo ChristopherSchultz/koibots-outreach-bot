@@ -1,15 +1,14 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.RPM;
-
 import java.util.Set;
 
-import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+@Logged
 public class Eye extends SubsystemBase {
     public static final double ANGLE_EAST = 0;
     public static final double ANGLE_NORTHEAST = 45;
