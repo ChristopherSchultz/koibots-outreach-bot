@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * Represents the Fishsticks shooter. This is only the actual shooter part of the robot, and not
- * turret extension, which can be found elsewhere.
+ * the turret, which can be found elsewhere.
  *
  * @see Turret
  */

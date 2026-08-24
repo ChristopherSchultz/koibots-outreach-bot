@@ -15,7 +15,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/** Represents the intake extension of Fishsticks. */
+/**
+ * Represents the intake extension of Fishsticks.
+ *
+ * The intake extension is the neck of our hungry-hungry hippo.
+ */
 @Logged
 public class IntakeExtension extends SubsystemBase {
     public static final int MOTOR_ID = 20;
