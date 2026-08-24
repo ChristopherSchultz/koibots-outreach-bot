@@ -3,30 +3,33 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.RPM;
 
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Eye extends SubsystemBase {
     public static final double ANGLE_EAST = 0;
-    public static final double ANGLE_SOUTHEAST = 45;
-    public static final double ANGLE_SOUTH = 90;
-    public static final double ANGLE_SOUTHWEST = 120;
+    public static final double ANGLE_NORTHEAST = 45;
+    public static final double ANGLE_NORTH = 90; // NOTE: This is "eye straight ahead" and as "up" as it goes
+    public static final double ANGLE_NORTHWEST = 135;
     public static final double ANGLE_WEST = 180;
-    public static final double ANGLE_NORTHWEST = 225;
-    public static final double ANGLE_NORTH = 270; // NOTE: This is "eyer straight ahead" and as "up" as they go
-    public static final double ANGLE_NORTHEAST = 315;
+    public static final double ANGLE_SOUTHWEST = 225;
+    public static final double ANGLE_SOUTH = 270;
+    public static final double ANGLE_SOUTHEAST = 315;
 
-    private static final int TURN_SPEED_RPM = 10;
-    private static final AngularVelocity TURN_LEFT = RPM.of(TURN_SPEED_RPM);
-    private static final AngularVelocity TURN_RIGHT = RPM.of(-TURN_SPEED_RPM);
+    public static final double ANGLE_TOLERANCE = 2.0;
 
     private boolean isRealRobot;
     private double targetAngle = ANGLE_NORTH;
-    private AngularVelocity speed = null;
 
-    public Eye(boolean isRealRobot) {
+    private final Servo servo;
+
+    protected Eye(boolean isRealRobot, int pwmChannel) {
         this.isRealRobot = isRealRobot;
+        servo = new Servo(pwmChannel);
+
+        setTargetAngle(targetAngle);
     }
 
     /**
@@ -36,62 +39,54 @@ public class Eye extends SubsystemBase {
      */
     protected void setTargetAngle(double targetAngle) {
         this.targetAngle = targetAngle;
-        this.speed = null;
+        servo.setPosition(targetAngle / 270.0); // NOTE: angle is being adjusted into 0 - 270º working space
     }
 
+    /**
+     * Checks to see if the Eye is at the target angle.
+     */
     public boolean isAtTargetAngle() {
-        return true; // TODO
+        return Math.abs(servo.getPosition() - targetAngle) <= ANGLE_TOLERANCE;
     }
 
-    protected void setSpeed(AngularVelocity speed) {
-        this.speed = speed;
+    protected Command lookAtCommand(double angle) {
+        return Commands.runOnce(() -> setTargetAngle(angle), this);
     }
 
-    @Override
-    public void periodic() {
-        // We are either set to a steady speed or heading toward a target.
-        if (null != speed) {
-            // motor.setSpeed(speed)
-        } else {
-            // motor.setTargetAngle(targetAngle)
-        }
+    protected Command lookAtAndWaitCommand(double angle) {
+        return lookAtCommand(angle)
+            .andThen(Commands.waitUntil(this::isAtTargetAngle))
+            ;
     }
 
     public Command getLookStraightCommand() {
-        return Commands.runOnce(() -> setTargetAngle(ANGLE_NORTH));
+        return lookAtAndWaitCommand(ANGLE_NORTH);
     }
 
     public Command getLookLeftCommand() {
-        return Commands.runOnce(() -> setTargetAngle(ANGLE_WEST));
+        return lookAtAndWaitCommand(ANGLE_WEST);
     }
 
     public Command getLookRightCommand() {
-        return Commands.runOnce(() -> setTargetAngle(ANGLE_EAST));
+        return lookAtAndWaitCommand(ANGLE_EAST);
     }
 
     public Command getLookDownCommand() {
-        return Commands.runOnce(() -> setTargetAngle(ANGLE_SOUTH));
+        return lookAtAndWaitCommand(ANGLE_SOUTH);
     }
 
     public Command getLookDownLeftCommand() {
-        return Commands.runOnce(() -> setTargetAngle(ANGLE_SOUTHWEST));
+        return lookAtAndWaitCommand(ANGLE_SOUTHWEST);
     }
 
     public Command getLookDownRightCommand() {
-        return Commands.runOnce(() -> setTargetAngle(ANGLE_SOUTHEAST));
-    }
-
-    public Command getSpinLeftCommand() {
-        return Commands.runOnce(() -> setSpeed(TURN_LEFT));
-    }
-
-    public Command getSpinRightCommand() {
-        return Commands.runOnce(() -> setSpeed(TURN_RIGHT));
+        return lookAtAndWaitCommand(ANGLE_SOUTHEAST);
     }
 
     public Command getOscillateBetweenCommand(double angleA, double angleB) {
-        return Commands.repeatingSequence(Commands.runOnce(() -> setTargetAngle(angleA)),
-                Commands.waitUntil(this::isAtTargetAngle), Commands.runOnce(() -> setTargetAngle(angleB)),
-                Commands.waitUntil(this::isAtTargetAngle));
+        return Commands.repeatingSequence(
+                lookAtAndWaitCommand(angleA),
+                lookAtAndWaitCommand(angleB))
+                ;
     }
 }

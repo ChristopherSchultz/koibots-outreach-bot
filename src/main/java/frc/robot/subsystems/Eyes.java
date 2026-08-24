@@ -5,11 +5,14 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Eyes extends SubsystemBase {
+    private static final int LEFT_EYE_PWM_CHANNEL = 0;
+    private static final int RIGHT_EYE_PWM_CHANNEL = 1;
+
     private final Eye leftEye, rightEye;
 
     public Eyes(boolean isRealRobot) {
-        leftEye = new Eye(isRealRobot);
-        rightEye = new Eye(isRealRobot);
+        leftEye = new Eye(isRealRobot, LEFT_EYE_PWM_CHANNEL);
+        rightEye = new Eye(isRealRobot, RIGHT_EYE_PWM_CHANNEL);
     }
 
     public Command getNeutralCommand() {
